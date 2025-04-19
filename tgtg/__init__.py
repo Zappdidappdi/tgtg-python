@@ -24,7 +24,7 @@ CREATE_ORDER_ENDPOINT = "order/v8/create/"
 ABORT_ORDER_ENDPOINT = "order/v8/{}/abort"
 ORDER_STATUS_ENDPOINT = "order/v8/{}/status"
 API_BUCKET_ENDPOINT = "discover/v1/bucket"
-DEFAULT_APK_VERSION = "24.11.0"
+DEFAULT_APK_VERSION = "25.4.1"
 USER_AGENTS = [
     "TGTG/{} Dalvik/2.1.0 (Linux; U; Android 9; Nexus 5 Build/M4B30Z)",
     "TGTG/{} Dalvik/2.1.0 (Linux; U; Android 10; SM-G935F Build/NRD90M)",
