@@ -79,6 +79,7 @@ class TgtgClient:
             sys.stdout.write("Failed to get last version\n")
 
         sys.stdout.write(f"Using version {self.version}\n")
+        sys.stdout.write(f"Using custom commit.\n")
 
         return random.choice(USER_AGENTS).format(self.version)
 
