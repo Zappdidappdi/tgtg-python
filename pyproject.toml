@@ -6,10 +6,9 @@ readme = "README.md"
 authors = ["Anthony Hivert <anthony.hivert@gmail.com>"]
 repository = "https://github.com/Zappdidappdi/tgtg-python"
 packages = [
-    { include = "tgtg-python" },
-    { include = "tgtg-python/**/*.py" },
+    { include = "tgtg" },
+    { include = "tgtg/*.py" },
 ]
-package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.9"
