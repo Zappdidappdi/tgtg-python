@@ -5,7 +5,10 @@ description = "Unoffical python client for TooGoodToGo API"
 readme = "README.md"
 authors = ["Anthony Hivert <anthony.hivert@gmail.com>"]
 repository = "https://github.com/Zappdidappdi/tgtg-python"
-
+packages = [
+    { include = "tgtg-python" },
+    { include = "tgtg-python/**/*.py" },
+]
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.27.1"
