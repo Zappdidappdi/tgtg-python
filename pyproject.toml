@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "tgtg"
+name = "tgtg-python"
 version = "0.18.2"
 description = "Unoffical python client for TooGoodToGo API"
 readme = "README.md"
