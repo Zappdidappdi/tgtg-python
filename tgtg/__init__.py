@@ -1,6 +1,7 @@
 import datetime
 import random
 import sys
+import logging
 import time
 from http import HTTPStatus
 from urllib.parse import urljoin
@@ -10,6 +11,7 @@ import requests
 from tgtg.google_play_scraper import get_last_apk_version
 
 from .exceptions import TgtgAPIError, TgtgLoginError, TgtgPollingError
+_LOGGER = logging.getLogger(__name__)
 
 BASE_URL = "https://apptoogoodtogo.com/api/"
 API_ITEM_ENDPOINT = "item/v8/"
@@ -121,6 +123,7 @@ class TgtgClient:
         ):
             return
 
+        _LOGGER.info("REQUEST: " + REFRESH_ENDPOINT)
         response = self.session.post(
             self._get_url(REFRESH_ENDPOINT),
             json={"refresh_token": self.refresh_token},
@@ -144,6 +147,7 @@ class TgtgClient:
         if self._already_logged:
             self._refresh_token()
         else:
+            _LOGGER.info("REQUEST: " + AUTH_BY_EMAIL_ENDPOINT)
             response = self.session.post(
                 self._get_url(AUTH_BY_EMAIL_ENDPOINT),
                 headers=self._headers,
@@ -175,6 +179,7 @@ class TgtgClient:
 
     def start_polling(self, polling_id):
         for _ in range(MAX_POLLING_TRIES):
+            _LOGGER.info("REQUEST: " + AUTH_POLLING_ENDPOINT)
             response = self.session.post(
                 self._get_url(AUTH_POLLING_ENDPOINT),
                 headers=self._headers,
@@ -251,6 +256,7 @@ class TgtgClient:
             "hidden_only": hidden_only,
             "we_care_only": we_care_only,
         }
+        _LOGGER.info("REQUEST: " + API_ITEM_ENDPOINT)
         response = self.session.post(
             self._get_url(API_ITEM_ENDPOINT),
             headers=self._headers,
@@ -265,6 +271,7 @@ class TgtgClient:
 
     def get_item(self, item_id):
         self.login()
+        _LOGGER.info("REQUEST: " + API_ITEM_ENDPOINT)
         response = self.session.post(
             urljoin(self._get_url(API_ITEM_ENDPOINT), str(item_id)),
             headers=self._headers,
@@ -294,6 +301,7 @@ class TgtgClient:
             "paging": {"page": page, "size": page_size},
             "bucket": {"filler_type": "Favorites"},
         }
+        _LOGGER.info("REQUEST: " + API_BUCKET_ENDPOINT)
         response = self.session.post(
             self._get_url(API_BUCKET_ENDPOINT),
             headers=self._headers,
@@ -308,6 +316,7 @@ class TgtgClient:
 
     def set_favorite(self, item_id, is_favorite):
         self.login()
+        _LOGGER.info("REQUEST: " + FAVORITE_ITEM_ENDPOINT.format(item_id))
         response = self.session.post(
             self._get_url(FAVORITE_ITEM_ENDPOINT.format(item_id)),
             headers=self._headers,
@@ -320,7 +329,8 @@ class TgtgClient:
 
     def create_order(self, item_id, item_count):
         self.login()
-
+        
+        _LOGGER.info("REQUEST: " + CREATE_ORDER_ENDPOINT)
         response = self.session.post(
             urljoin(self._get_url(CREATE_ORDER_ENDPOINT), str(item_id)),
             headers=self._headers,
@@ -338,6 +348,7 @@ class TgtgClient:
     def get_order_status(self, order_id):
         self.login()
 
+        _LOGGER.info("REQUEST: " + ORDER_STATUS_ENDPOINT.format(order_id))
         response = self.session.post(
             self._get_url(ORDER_STATUS_ENDPOINT.format(order_id)),
             headers=self._headers,
@@ -353,6 +364,7 @@ class TgtgClient:
         """Use this when your order is not yet paid"""
         self.login()
 
+        _LOGGER.info("REQUEST: " + ABORT_ORDER_ENDPOINT.format(order_id))
         response = self.session.post(
             self._get_url(ABORT_ORDER_ENDPOINT.format(order_id)),
             headers=self._headers,
@@ -376,6 +388,7 @@ class TgtgClient:
         newsletter_opt_in=False,
         push_notification_opt_in=True,
     ):
+        _LOGGER.info("REQUEST: " + SIGNUP_BY_EMAIL_ENDPOINT)
         response = self.session.post(
             self._get_url(SIGNUP_BY_EMAIL_ENDPOINT),
             headers=self._headers,
@@ -401,6 +414,7 @@ class TgtgClient:
 
     def get_active(self):
         self.login()
+        _LOGGER.info("REQUEST: " + ACTIVE_ORDER_ENDPOINT)
         response = self.session.post(
             self._get_url(ACTIVE_ORDER_ENDPOINT),
             headers=self._headers,
@@ -415,6 +429,7 @@ class TgtgClient:
 
     def get_inactive(self, page=0, page_size=20):
         self.login()
+        _LOGGER.info("REQUEST: " + INACTIVE_ORDER_ENDPOINT)
         response = self.session.post(
             self._get_url(INACTIVE_ORDER_ENDPOINT),
             headers=self._headers,
